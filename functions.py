@@ -1,6 +1,7 @@
+from itertools import count
 from typing import List, Tuple
 import random
-from day import *
+from day import Day
 
 def getSundaysDays(numberDays:int, starCriteria:str) -> List:
     #function to get sundays ---  it works
@@ -69,4 +70,31 @@ def generateWeight(numberDays:int, weightRange:Tuple, repeatWeights = True) -> L
 
 
 def generateDays(numberDays:int, starCriteria:str,  dailyWeight:List, sundayDays:List) -> List:
-    pass
+    weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+    if numberDays in (28,29,30,31) and starCriteria.lower() in weekdays:
+        listDays = []
+        counter = weekdays.index(starCriteria)
+        objectDay = any  #Day(day=, numberDay=, weight=, dayIsSunday=False, numberPeople=2)
+
+        for day in range(1, numberDays+1):
+
+            if counter == len(weekdays):
+                counter = 0
+
+            if weekdays[counter] == 'sunday' and day in sundayDays:
+                #You have to update the weight because Sundays are worth two
+                objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[day-1], dayIsSunday=True, numberPeople=2)
+                objectDay.setWeightUpdated = objectDay.getWeight * objectDay.getWeightDaySunday
+                listDays.append(objectDay)
+
+            else:
+                objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[day-1])
+                listDays.append(objectDay)
+                pass
+
+            counter += 1
+        
+        return listDays
+
+    else:
+        raise ValueError('generateDays - wrong arguments')
