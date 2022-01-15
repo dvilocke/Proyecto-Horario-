@@ -1,6 +1,6 @@
-from itertools import count
 from typing import List, Tuple
 import random
+
 from day import Day
 
 def getSundaysDays(numberDays:int, starCriteria:str) -> List:
@@ -96,3 +96,5 @@ def generateDays(numberDays:int, starCriteria:str,  dailyWeight:List, sundayDays
             raise ValueError('generateDays - the arguments do not meet the standard')
     else:
         raise ValueError('generateDays - wrong arguments(type)')
+
+

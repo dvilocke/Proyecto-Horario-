@@ -7,6 +7,11 @@ class Day:
         self.dayIsSunday = dayIsSunday
         self.weightUpdated = 0
         self.weightDaySunday = weightDaySunday
+
+        #Data of the person
+
+        self.pointerToPerson = any
+        
     #get
 
     @property
