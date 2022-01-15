@@ -6,30 +6,32 @@ from day import Day
 def getSundaysDays(numberDays:int, starCriteria:str) -> List:
     #function to get sundays ---  it works
     weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-    if numberDays in (28,29,30,31) and starCriteria.lower() in weekdays:
-        sundaysDays = [] 
-        counter = weekdays.index(starCriteria)
-        days = [day for day in range(1, numberDays+1)]
+    if type(numberDays) == int and type(starCriteria) == str:
+        if numberDays in (28,29,30,31) and starCriteria.lower() in weekdays:
+            sundaysDays = [] 
+            counter = weekdays.index(starCriteria)
+            days = [day for day in range(1, numberDays+1)]
 
-        for day in days:
+            for day in days:
 
-            if counter == len(weekdays):
-                counter = 0
+                if counter == len(weekdays):
+                    counter = 0
 
-            if weekdays[counter] == 'sunday':
-                sundaysDays.append(day)
+                if weekdays[counter] == 'sunday':
+                    sundaysDays.append(day)
 
-            counter += 1
+                counter += 1
 
-        return sundaysDays
+            return sundaysDays
 
+        else:
+            raise ValueError('getSundaysDays - the arguments do not meet the standard')
     else:
-        raise ValueError('getSundaysDays - wrong arguments')
+        raise ValueError('getSundaysDays - wrong argument(type)')
 
 
 def checkRange(weightRange:Tuple) -> bool:
     #function to check the range argument, if it meets the standards --- it works
-
     if len(weightRange) == 2:
         if weightRange[0] > 0 and weightRange[1] > 0:
             if weightRange[0] < weightRange[1]:
@@ -37,64 +39,60 @@ def checkRange(weightRange:Tuple) -> bool:
     return False
 
 
-def generateWeight(numberDays:int, weightRange:Tuple, repeatWeights = True) -> List:
-    #function to generate the weights of the days of the week --- it works
-    if numberDays in (28,29,30,31):
-        if type(weightRange) == tuple:
-            if checkRange(weightRange):
-                dailyWeight = []
-
-                if repeatWeights:
-                    for _ in range(1, numberDays+1):
-                        weight = random.randint(weightRange[0], weightRange[1])
-                        dailyWeight.append(weight)
-
-                    return dailyWeight[::-1]
-
+def generateWeight(rangeM_F:Tuple, rangeSa:Tuple, rangeSu:Tuple) -> list:
+    #function that generates the weight from Monday to Friday, then on Saturday and finally on Sunday, complies with the control parameters --- it works
+    if type(rangeM_F) == tuple and type(rangeSa) == tuple and type(rangeSu) == tuple:
+        if checkRange(rangeM_F) and checkRange(rangeSa) and checkRange(rangeSu):
+            if rangeM_F < rangeSa:
+                if rangeSa < rangeSu:
+                    return [random.randint(rangeM_F[0], rangeM_F[1]), random.randint(rangeSa[0], rangeSa[1]), random.randint(rangeSu[0], rangeSu[1])]
                 else:
-                    while True:
-                        weight = random.randint(weightRange[0], weightRange[1])
-                        if weight not in dailyWeight:
-                            dailyWeight.append(weight)
-
-                        if len(dailyWeight) == numberDays:
-                            break
-
-                    return dailyWeight[::-1]
+                    raise ValueError('the ranges do not respect the order rangeM_F < rangeSa and rangeSa < rangeSu')
             else:
-                raise ValueError('generateDailyWeight - the argument weightRange does not meet standards')
+                raise ValueError('the ranges do not respect the order rangeM_F < rangeSa and rangeSa < rangeSu')
         else:
-            raise ValueError('generateDailyWeight - the argument weightRange does not meet standards')
+         raise ValueError('ranges do not meet standard')
+
     else:
-        raise ValueError('generateDailyWeight - wrong arguments')
+        raise ValueError('generateWeight - wrong arguments(type)')
 
 
 def generateDays(numberDays:int, starCriteria:str,  dailyWeight:List, sundayDays:List) -> List:
     weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-    if numberDays in (28,29,30,31) and starCriteria.lower() in weekdays:
-        listDays = []
-        counter = weekdays.index(starCriteria)
-        objectDay = any  #Day(day=, numberDay=, weight=, dayIsSunday=False, numberPeople=2)
 
-        for day in range(1, numberDays+1):
+    if type(numberDays) == int and type(starCriteria) == str and type(dailyWeight) == list and type(sundayDays) == list:
+        if numberDays in (28,29,30,31) and starCriteria.lower() in weekdays:
+            listDays = []
+            counter = weekdays.index(starCriteria)
+            objectDay = any  #Day(day=, numberDay=, weight=, dayIsSunday=False, numberPeople=2)
 
-            if counter == len(weekdays):
-                counter = 0
+            for day in range(1, numberDays+1):
 
-            if weekdays[counter] == 'sunday' and day in sundayDays:
-                #You have to update the weight because Sundays are worth two
-                objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[day-1], dayIsSunday=True, numberPeople=2)
-                objectDay.setWeightUpdated = objectDay.getWeight * objectDay.getWeightDaySunday
-                listDays.append(objectDay)
+                if counter == len(weekdays):
+                    counter = 0
 
-            else:
-                objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[day-1])
-                listDays.append(objectDay)
-                pass
+                #dailyWeight[n] n->0(Monday-friday), n->1(saturday), n->2(sunday)
 
-            counter += 1
-        
-        return listDays
+                if weekdays[counter] == 'sunday' and day in sundayDays:
+                    #You have to update the weight because Sundays are worth two
+                    objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[2], dayIsSunday=True, numberPeople=2)
+                    objectDay.setWeightUpdated = objectDay.getWeight * objectDay.getWeightDaySunday
+                    listDays.append(objectDay)
 
+                elif weekdays[counter] == 'saturday':
+                    objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[1])
+                    listDays.append(objectDay)
+
+
+                else:
+                    objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[0])
+                    listDays.append(objectDay)
+
+                counter += 1
+            
+            return listDays
+
+        else:
+            raise ValueError('generateDays - the arguments do not meet the standard')
     else:
-        raise ValueError('generateDays - wrong arguments')
+        raise ValueError('generateDays - wrong arguments(type)')
