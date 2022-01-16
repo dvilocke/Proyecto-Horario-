@@ -25,12 +25,11 @@ if __name__ == '__main__':
         sundayDays = getSundaysDays(numberDays=numberDays, starCriteria=starCriteria)
         dailyWeight = generateWeight(rangeM_F=(1,50), rangeSa=(50,70), rangeSu=(70,100))
         days = generateDays(numberDays=numberDays, starCriteria=starCriteria, dailyWeight=dailyWeight, sundayDays=sundayDays)
-        almanac = Almanac(days=days, persons=peopleList)
+        almanac = Almanac(days=days, persons=peopleList, starCriteria=starCriteria)
 
+        almanac.generateScheduleWithPeople()
 
-        print(almanac.seeDaysWithoutThePeople())
-        print(almanac.countDaysWeightWithoutPeople())
-
+        print('hola')
 
     except ValueError as error:
         print(error)

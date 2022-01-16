@@ -10,7 +10,8 @@ class Day:
 
         #Data of the person
 
-        self.pointerToPerson = any
+        self.pointerToPersonsDay = []
+        self.pointerToPersonsAfternoon = []
         
     #get
 
@@ -43,11 +44,24 @@ class Day:
     def getWeightDaySunday(self):
         return self.weightDaySunday
 
+    @property
+    def getPointerToPersonsDay(self):
+        return self.pointerToPersonsDay
+
+    @property
+    def getPointerToPersonsAfternoon(self):
+        return self.pointerToPersonsAfternoon
+
     #set 
 
     @getWeightUpdated.setter
     def setWeightUpdated(self, newValue):
         self.weightUpdated = newValue
+
+
+    def stockReset(self):
+        self.pointerToPersonsDay = []
+        self.pointerToPersonsAfternoon = []
 
     def __repr__(self) -> str:
         return f'(day:{self.day}/dayNumber:{self.numberDay}/weight:{self.weight}/numberPeople:{self.numberPeople}/dayIsSunday:{"yes" if self.dayIsSunday == True else "No"}/weightUpdated:{self.weightUpdated}/weightDaySunday:{self.weightDaySunday})'
