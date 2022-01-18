@@ -25,7 +25,8 @@ class Almanac:
 
             #cada vez que se complete un ciclo de la semana debo reiniciar los datos, datos de las personas disponibles !!!! ---> nada
             if self.weekdays[counterWeekdays] == resetDay:
-                pass
+                for person in self.persons:
+                    person.resetData()
 
             #cada dia se debe actualizar los datos para estar revisnando ----> nada
             self.getAvailable(day=day.getNumberDay)
@@ -130,6 +131,18 @@ class Almanac:
                     del self.available[self.available.index[person]]
 
 
+    def printSchedule(self):
+        print('\n')
+        
+        for day in self.days:
+            msg = f"{day.getDay}({day.getWeight})({day.getWeightUpdated}):{[f'{person.getName}({person.getWeight})' for person in day.getPointerToPersonsDay]}, {[f'{person.getName}({person.getWeight})' for person in day.getPointerToPersonsAfternoon]}"
+            print(msg)
+            print('\n')
+
+        print(self.countDaysWeightWithoutPeople())
+
+        print(self.__countWeightScheduleWithPeople())
+
     def __sundaySystem(self, day):
         #que pasa si todos dos caen un domingo y no pueden trabajar al otro dia
         for person in self.persons:
@@ -179,6 +192,13 @@ class Almanac:
             readyToShow.append(component)
 
         return pd.Series(data=readyToShow, index=index)
+
+
+    def __countWeightScheduleWithPeople(self):
+        component = 0
+        for day in self.days:
+            component += day.getWeightUpdated + sum([int(person.getWeight) for person in day.getPointerToPersonsDay]) + sum([int(person.getWeight) for person in day.getPointerToPersonsAfternoon])        
+        return f'The sum total of the weights with the pople is:{component}'
 
     def countDaysWeightWithoutPeople(self)  -> str:
         #function that calculates the total of the days according to their weight without the people  -- it works

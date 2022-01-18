@@ -38,6 +38,11 @@ class Person:
     def setRestDay(self, newValue):
         self.restDay = newValue
 
+    def resetData(self):
+        self.mustRestOneDay = False
+        self.hoursWorked = 0
+        self.restDay = 0
+
     def __repr__(self) -> str:
         return f'Name:{self.name}-weight:{self.weight}-mustRestOneDay:{self.mustRestOneDay}-hoursWorked:{self.hoursWorked}-restDay:{self.restDay}'
 

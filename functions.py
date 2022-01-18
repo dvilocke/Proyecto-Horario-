@@ -81,11 +81,13 @@ def generateDays(numberDays:int, starCriteria:str,  dailyWeight:List, sundayDays
 
                 elif weekdays[counter] == 'saturday':
                     objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[1])
+                    objectDay.setWeightUpdated  =  objectDay.getWeight
                     listDays.append(objectDay)
 
 
                 else:
                     objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[0])
+                    objectDay.setWeightUpdated  =  objectDay.getWeight
                     listDays.append(objectDay)
 
                 counter += 1
