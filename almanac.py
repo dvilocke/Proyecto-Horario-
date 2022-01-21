@@ -113,6 +113,10 @@ class Almanac:
             
             counterWeekdays += 1
 
+        return {
+            self.__totalWeightOnlyNumber():self.days
+        }
+
     def getAvailable(self, day):
         #fucnion que debo revisar bien
         self.__sundaySystem(day=day)
@@ -193,6 +197,11 @@ class Almanac:
 
         return pd.Series(data=readyToShow, index=index)
 
+    def __totalWeightOnlyNumber(self) -> int:
+        component = 0
+        for day in self.days:
+            component += day.getWeightUpdated + sum([int(person.getWeight) for person in day.getPointerToPersonsDay]) + sum([int(person.getWeight) for person in day.getPointerToPersonsAfternoon])
+        return component
 
     def __countWeightScheduleWithPeople(self):
         component = 0

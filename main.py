@@ -15,6 +15,10 @@ if __name__ == '__main__':
     '''   
     numberDays = 31
     starCriteria = 'saturday'
+    numberOperations = 10000
+    schedules = []
+
+    scores = []
 
     #people who are going to enter the schedule
 
@@ -24,21 +28,39 @@ if __name__ == '__main__':
         Person(name='Ana', weight=22), Person(name='Jhon', weight=27), Person(name='Pepe', weight=33), Person(name='Jesus', weight=60)
         ]
 
+    dailyWeight = generateWeight(rangeM_F=(1,50), rangeSa=(50,70), rangeSu=(70,100))
+
     try:
-        sundayDays = getSundaysDays(numberDays=numberDays, starCriteria=starCriteria)
-        dailyWeight = generateWeight(rangeM_F=(1,50), rangeSa=(50,70), rangeSu=(70,100))
-        days = generateDays(numberDays=numberDays, starCriteria=starCriteria, dailyWeight=dailyWeight, sundayDays=sundayDays)
-        almanac = Almanac(days=days, persons=peopleList, starCriteria=starCriteria)
+        for i in range(numberOperations):
+            sundayDays = getSundaysDays(numberDays=numberDays, starCriteria=starCriteria)
+            days = generateDays(numberDays=numberDays, starCriteria=starCriteria, dailyWeight=dailyWeight, sundayDays=sundayDays)
+            almanac = Almanac(days=days, persons=peopleList, starCriteria=starCriteria)
 
-        '''
-        shows the schedule without people, and shows the weight of the generated schedule without people
-        '''
+            '''
+            shows the schedule without people, and shows the weight of the generated schedule without people
+            '''
 
-        #print(almanac.seeDaysWithoutThePeople())
-        #print(almanac.countDaysWeightWithoutPeople())
+            #print(almanac.seeDaysWithoutThePeople())
+            #print(almanac.countDaysWeightWithoutPeople())
 
-        almanac.generateScheduleWithPeople()
-        almanac.printSchedule()
+            '''
+            shows the schedule with the people already assigned, it also shows the total weight with assigned people and without people
+            '''
+
+            schedule = almanac.generateScheduleWithPeople()
+            #almanac.printSchedule()
+
+            scores.append(list(schedule.keys())[0])
+
+            schedules.append(schedule)
+
+            print(f'calculated hour counter{i+1}')
+        
+        bestScore = getBestScore(scores=scores)
+
+        finalSchedule = getBestSchedule(schedules=schedules, bestScore=bestScore, numberOperations=numberOperations)
+
+        print(f'\nscores evaluated:{len(scores)}')
 
     except ValueError as error:
         print(error)

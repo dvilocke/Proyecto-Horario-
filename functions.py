@@ -75,7 +75,7 @@ def generateDays(numberDays:int, starCriteria:str,  dailyWeight:List, sundayDays
 
                 if weekdays[counter] == 'sunday' and day in sundayDays:
                     #You have to update the weight because Sundays are worth two
-                    objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[2], dayIsSunday=True, numberPeople=2)
+                    objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[2], dayIsSunday=True)
                     objectDay.setWeightUpdated = objectDay.getWeight * objectDay.getWeightDaySunday
                     listDays.append(objectDay)
 
@@ -98,5 +98,27 @@ def generateDays(numberDays:int, starCriteria:str,  dailyWeight:List, sundayDays
             raise ValueError('generateDays - the arguments do not meet the standard')
     else:
         raise ValueError('generateDays - wrong arguments(type)')
+
+
+def getBestSchedule(schedules:List, bestScore:int, numberOperations:int) -> str:
+    finalSchedule = None
+    for schedule in schedules:
+        if bestScore == list(schedule.keys())[0]:
+            finalSchedule = schedule[bestScore]
+    
+    print(f'-------------------after {numberOperations} operations, the final schedule is-------------------')
+    if finalSchedule is not None:
+        print(f'schedule weight:{bestScore}\n')
+        for day in finalSchedule:
+            msg = f"{day.getDay}({day.getWeight})({day.getWeightUpdated}):{[f'{person.getName}({person.getWeight})' for person in day.getPointerToPersonsDay]}, {[f'{person.getName}({person.getWeight})' for person in day.getPointerToPersonsAfternoon]}"
+            print(msg)
+    else:
+        raise ValueError('getBestSchedule - error finalschedule is None')
+        
+
+def getBestScore(scores:List) -> int:
+    orderedList = sorted(scores)
+    return orderedList[0]
+
 
 
