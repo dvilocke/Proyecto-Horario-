@@ -1,5 +1,5 @@
 class Day:
-    def __init__(self,day:str, numberDay:int, weight:int, dayIsSunday:bool = False, numberPeople:int = 2, weightDaySunday = 2) -> None:
+    def __init__(self,day:str, numberDay:int, weight:int, dayIsSunday:bool = False, weightMorning = 10, weightAfternoon = 12, numberPeople:int = 2, weightDaySunday = 2) -> None:
         self.day = day 
         self.numberDay = numberDay
         self.weight = weight
@@ -12,6 +12,9 @@ class Day:
 
         self.pointerToPersonsDay = []
         self.pointerToPersonsAfternoon = []
+
+        self.weightMorning = weightMorning
+        self.weightAfternoon = weightAfternoon
         
     #get
 
@@ -51,6 +54,14 @@ class Day:
     @property
     def getPointerToPersonsAfternoon(self):
         return self.pointerToPersonsAfternoon
+
+    @property
+    def getWeightMorning(self):
+        return self.weightMorning
+
+    @property 
+    def getWeightAfternoon(self):
+        return self.weightAfternoon
 
     #set 
 

@@ -2,6 +2,7 @@
 from functions import *
 from person import Person
 from almanac import Almanac
+import sys
 
 import pandas as pd
 
@@ -11,14 +12,22 @@ if __name__ == '__main__':
         Documentation
         numberDays -> are the days that make up a month  -> sys.argv[1]
         starCriteria ->  is where the selected month starts -> sys.argv[2]
-
     '''   
+
+    numberDays = int(sys.argv[1])
+    starCriteria = sys.argv[2]
+    numberOperations = int(sys.argv[3])
+
+    '''
     numberDays = 31
     starCriteria = 'saturday'
-    numberOperations = 10000
+    numberOperations = 2
+    '''
+
     schedules = []
 
     scores = []
+    #scoresCopy = []
 
     #people who are going to enter the schedule
 
@@ -48,19 +57,33 @@ if __name__ == '__main__':
             '''
 
             schedule = almanac.generateScheduleWithPeople()
+
             #almanac.printSchedule()
 
             scores.append(list(schedule.keys())[0])
+            #scoresCopy.append(list(schedule.keys())[0])
 
             schedules.append(schedule)
 
             print(f'calculated hour counter{i+1}')
-        
+
+            if len(scores) == 10:
+                lowerScore = min(scores)
+                indexMinor = scores.index(lowerScore)
+                bestSchedule = schedules[indexMinor]
+
+                scores = []
+                schedules = []
+
+                scores.append(lowerScore)
+                schedules.append(bestSchedule)
+
         bestScore = getBestScore(scores=scores)
+        #print(scoresCopy)
 
         finalSchedule = getBestSchedule(schedules=schedules, bestScore=bestScore, numberOperations=numberOperations)
 
-        print(f'\nscores evaluated:{len(scores)}')
+        #print(scores)
 
     except ValueError as error:
         print(error)

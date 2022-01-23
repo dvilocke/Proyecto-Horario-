@@ -1,6 +1,5 @@
 from typing import List, Tuple
 import random
-
 from day import Day
 
 def getSundaysDays(numberDays:int, starCriteria:str) -> List:
@@ -75,12 +74,12 @@ def generateDays(numberDays:int, starCriteria:str,  dailyWeight:List, sundayDays
 
                 if weekdays[counter] == 'sunday' and day in sundayDays:
                     #You have to update the weight because Sundays are worth two
-                    objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[2], dayIsSunday=True)
+                    objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[2],  dayIsSunday=True, weightMorning=20, weightAfternoon=30)
                     objectDay.setWeightUpdated = objectDay.getWeight * objectDay.getWeightDaySunday
                     listDays.append(objectDay)
 
                 elif weekdays[counter] == 'saturday':
-                    objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[1])
+                    objectDay = Day(day=weekdays[counter], numberDay=day, weight=dailyWeight[1], weightMorning=15, weightAfternoon=18)
                     objectDay.setWeightUpdated  =  objectDay.getWeight
                     listDays.append(objectDay)
 
@@ -110,15 +109,11 @@ def getBestSchedule(schedules:List, bestScore:int, numberOperations:int) -> str:
     if finalSchedule is not None:
         print(f'schedule weight:{bestScore}\n')
         for day in finalSchedule:
-            msg = f"{day.getDay}({day.getWeight})({day.getWeightUpdated}):{[f'{person.getName}({person.getWeight})' for person in day.getPointerToPersonsDay]}, {[f'{person.getName}({person.getWeight})' for person in day.getPointerToPersonsAfternoon]}"
+            msg = f"{day.getDay}({day.getWeightUpdated}), weight_M({day.getWeightMorning})_A({day.getWeightAfternoon}), >>>>>>> {[f'{person.getName}({person.getWeight})' for person in day.getPointerToPersonsDay]}, {[f'{person.getName}({person.getWeight})' for person in day.getPointerToPersonsAfternoon]}"
             print(msg)
     else:
         raise ValueError('getBestSchedule - error finalschedule is None')
         
-
 def getBestScore(scores:List) -> int:
     orderedList = sorted(scores)
     return orderedList[0]
-
-
-
